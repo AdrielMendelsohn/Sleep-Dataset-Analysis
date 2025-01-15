@@ -28,7 +28,7 @@ def analyze_csv(file_path):
 # Function to process JSON files
 def analyze_json(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
-        data = pd.read_json(file)  # Load the JSON data
+        data = json.load(file)  # Load the JSON data
     return {
         'file_name': os.path.basename(file_path),
         'record_count': len(data),
