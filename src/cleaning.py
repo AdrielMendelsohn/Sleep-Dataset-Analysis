@@ -1,4 +1,5 @@
 from . import files_import
+import re
 
 def clean_data_from_jsons_folder(folder_path):
     # הפעלת הפונקציה לעיבוד התיקייה
@@ -15,3 +16,11 @@ def clean_data_from_jsons_folder(folder_path):
 
     # החזרת המידע הנקי
     return results
+
+
+
+def extract_participant(filename):
+    matches = re.findall(r"u\d+(?=\.)", filename)
+    if len(matches)>1:
+        raise Exception("Multiple participants in name")
+    return matches[0]
