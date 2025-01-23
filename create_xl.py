@@ -102,6 +102,11 @@ combined_csv['number_of_people'] = average_social
 combined_csv['avg_stress_level'] = average_stress
 
 #%%
+######################################
+#
+#               Exercise
+#
+######################################
 
 # Transformation dictionaries
 exercise_mapping = {
@@ -113,7 +118,7 @@ exercise_data['exercise_time'] = exercise_data['exercise'].map(exercise_mapping)
 exercise_data['walk_time'] = exercise_data['walk'].map(exercise_mapping)
 average_exercise_time = exercise_data.groupby('User')['exercise_time'].mean()
 average_walk_time = exercise_data.groupby('User')['walk_time'].mean()
-exercise_amount = exercise_data[exercise_data['exercise'] == 1].groupby('User')['exercise'].sum()
+exercise_amount = exercise_data[exercise_data['have'] == 1].groupby('User')['have'].sum()
 exercise_avg_per_day = exercise_amount/semester_length_in_days
 
 combined_csv['amount_of_workouts'] = exercise_amount
@@ -133,7 +138,7 @@ sleep_data['sleep_hours'] = sleep_data['hour'].map(sleep_hour_mapping)
 sleep_data['sleep_rate'] = sleep_data['rate'].map(sleep_rate_mapping)
 
 average_sleep_hours = sleep_data.groupby('User')['sleep_hours'].mean()
-average_sleep_rating = sleep_data.groupby('User')['rate'].mean()
+average_sleep_rating = sleep_data.groupby('User')['sleep_rate'].mean()
 
 combined_csv['avg_sleep_hours'] = average_sleep_hours
 combined_csv['avg_sleep_rating'] = average_sleep_rating
