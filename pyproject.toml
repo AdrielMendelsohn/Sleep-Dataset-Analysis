@@ -36,13 +36,14 @@ build = [
 ]
 
 [tool.ruff]
+ignore = ["ALL"]
 line-length = 120
 src = ["src"]
 extend-exclude = [
     "conf.py",
 ]
 target-version = "py312"
-lint.select = ["ALL"]
+lint.select = []
 lint.ignore = [
     "COM812",   # Conflicts with the formatter
     "ISC001",   # Conflicts with the formatter

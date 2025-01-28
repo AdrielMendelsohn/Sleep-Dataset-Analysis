@@ -1,5 +1,3 @@
-
-#     Imports
 from src import cleaning, plotting
 
 # Variables
@@ -37,7 +35,7 @@ def create_sleep_heatmap(sleep_data, show_choice, save_choice):
     columns_to_keep = ["study", "demo_firstgen", "bedtime_mssd", "TotalSleepTime", "midpoint_sleep",
                         "frac_nights_with_data", "daytime_sleep", "score_scaled"]
     sleep_data_copy = sleep_data[columns_to_keep]
-    plotting.plot_correlation_matrix(sleep_data_copy , "Score", show_choice, save_choice)
+    plotting.plot_correlation_matrix(sleep_data_copy , "Grades Score", show_choice, save_choice)
 
 def create_sleep_scatter_plots(sleep_data, show_choice, save_choice):
     plotting.scatterplot_regression_by_group(sleep_data, "study", "midpoint_sleep", "score", show_choice, save_choice)

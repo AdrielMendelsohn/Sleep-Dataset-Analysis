@@ -119,7 +119,7 @@ def plot_more_correlations(df, show_choice, save_choice):
     else:
         plt.close()
 
-def main(file_path = "data/output.xlsx", show_choice = 0, save_choice = 0):
+def run_full_data_analysis(file_path = "data/output.xlsx", show_choice = 0, save_choice = 0):
     # Default - looks for "output.xlsx" in the directory, doesn't save or show
     df = pd.read_excel(file_path)
     # plot all graphs:

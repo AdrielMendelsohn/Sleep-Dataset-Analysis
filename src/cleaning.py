@@ -1,25 +1,23 @@
 import re
-
 import numpy as np
 import pandas as pd
-
 from . import files_import
 
 
 def clean_data_from_jsons_folder(folder_path):
-    # הפעלת הפונקציה לעיבוד התיקייה
+    # Activating the function to process the folder
     results = files_import.process_folder(folder_path)
 
-    # ניקוי הנתונים
+    # Cleaning the data
     for student in results:
         if "data" in student:
-           # סינון הנתונים כך שלא יכילו ערכים עם המפתח 'null'
+           # Filter the data so that they do not contain values ​​with the key 'null'
             student["data"] = [obj for obj in student["data"] if "null" not in obj]
         if "record_count" in student:
             # update relevant record_count
             student["record_count"] = len(student["data"])
 
-    # החזרת המידע הנקי
+    # Returning the clean information
     return results
 
 
