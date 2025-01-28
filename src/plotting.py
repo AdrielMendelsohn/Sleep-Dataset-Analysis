@@ -4,10 +4,8 @@ import seaborn as sns
 from scipy.stats import linregress
 
 
-
-def plot_correlation_matrix(data, name):
-    """
-    Computes and plots a heatmap of the correlation matrix for a given DataFrame.
+def plot_correlation_matrix(data, name, show_choice, save_choice):
+    """Computes and plots a heatmap of the correlation matrix for a given DataFrame.
 
     Parameters:
     - data: pandas DataFrame containing the dataset.
@@ -20,16 +18,19 @@ def plot_correlation_matrix(data, name):
 
     # Plot the heatmap
     plt.figure(figsize=(12, 8))
-    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f')
-    plt.title(name +' Feature Correlation')
+    sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+    plt.title(name +" Feature Correlation")
     plt.tight_layout()
-    plt.savefig("results/" + name + " Feature Correlation.png", dpi = 300)
-    plt.show()
+    if save_choice:
+        plt.savefig(f"results/{name} Feature Correlation.png", dpi = 300)
+    if show_choice:
+        plt.show()
+    else:
+        plt.close()
 
 
-def scatterplot_regression_by_group(data, group_col, x_col, y_col):
-    """
-    Creates a single scatterplot with different colors and regression lines for each group in the dataset, and saves as .png.
+def scatterplot_regression_by_group(data, group_col, x_col, y_col, show_choice, save_choice):
+    """Creates a single scatterplot with different colors and regression lines for each group in the dataset, and saves as .png.
 
     Parameters:
     - data: pandas DataFrame containing the dataset.
@@ -45,7 +46,7 @@ def scatterplot_regression_by_group(data, group_col, x_col, y_col):
     groups = data[group_col].unique()
     palette = sns.color_palette("husl", len(groups))
 
-    for group, color in zip(groups, palette):
+    for group, color in zip(groups, palette, strict=False):
         group_data = data[data[group_col] == group]
 
         # Perform linear regression
@@ -53,19 +54,24 @@ def scatterplot_regression_by_group(data, group_col, x_col, y_col):
 
         # Scatterplot
         sns.scatterplot(
-            data=group_data, x=x_col, y=y_col, color=color, label=f'Group {group}', s=50, alpha=0.4
+            data=group_data, x=x_col, y=y_col, color=color, label=f"Group {group}", s=50, alpha=0.4
         )
 
         # Regression line
         x_vals = group_data[x_col]
         y_vals = intercept + slope * x_vals
-        plt.plot(x_vals, y_vals, color=color, linestyle='--', label=f'{group} Regression (r={r_value:.2f}, P value={p_value:.3f}), STD error={std_err:.2f}')
+        plt.plot(x_vals, y_vals, color=color, linestyle="--", label=f"{group} Regression (r={r_value:.2f}, P value={p_value:.3f}), STD error={std_err:.2f}")
 
-    plt.title(x_col + ' and ' + y_col + 'Scatter Plot', fontsize=16)
+    plt.title(x_col + " and " + y_col + "Scatter Plot", fontsize=16)
     plt.xlabel(x_col, fontsize=12)
     plt.ylabel(y_col, fontsize=12)
     plt.legend(title="Groups", fontsize=10, title_fontsize=12)
-    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.grid(True, linestyle="--", alpha=0.7)
     plt.tight_layout()
-    plt.savefig("results/" + x_col + " " + y_col + " Scatter Plot.png", dpi = 300)
-    plt.show()
+
+    if save_choice:
+        plt.savefig(f"results/{x_col} {y_col} Scatter Plot.png", dpi = 300)
+    if show_choice:
+        plt.show()
+    else:
+        plt.close()

@@ -1,8 +1,10 @@
 #    Variables
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
+
 import matplotlib.pyplot as plt
 import numpy as np
+
 
 # Function to generate a sample graph
 def generate_graph():

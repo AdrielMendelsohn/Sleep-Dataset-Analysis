@@ -1,46 +1,46 @@
 #%%     Imports
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
 from sklearn import metrics
-from src import cleaning
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
+from src import cleaning
 
 #%%     Variables
 
-file_path = "data\sleep_study\cmu-sleep.csv"
+file_path = r"data\sleep_study\cmu-sleep.csv"
 
-features = [ 'TotalSleepTime',
-               'bedtime_mssd',
-                 'midpoint_sleep',
-                 'study',
-                  'daytime_sleep'
+features = [ "TotalSleepTime",
+               "bedtime_mssd",
+                 "midpoint_sleep",
+                 "study",
+                  "daytime_sleep"
                ]
 
-col_to_predict = 'score'
+col_to_predict = "score"
 data = pd.read_csv(file_path)
 
 #%% Make new feature - weighted score (0-100)
 
 
-data['score'] = data.groupby('study')['term_gpa'].transform(lambda x: 25 * x)
+data["score"] = data.groupby("study")["term_gpa"].transform(lambda x: 25 * x)
 # Scaling according to specific Universities scores
-data['score_scaled'] = data.groupby('study')['term_gpa'].transform(
+data["score_scaled"] = data.groupby("study")["term_gpa"].transform(
     lambda x: 100 * (x - x.min()) / (x.max() - x.min())
 )
 #%%  Clean the data
-data = data.drop('cohort', axis=1)
+data = data.drop("cohort", axis=1)
 
 data = cleaning.drop_blanks_and_nulls(data)
 
 
-data = data.apply(pd.to_numeric, errors='coerce')
+data = data.apply(pd.to_numeric, errors="coerce")
 
-data = data[data['study'] != 5]
+data = data[data["study"] != 5]
 # Delete outliers
-data = data[data['bedtime_mssd']<= 5]
-data = data[data['daytime_sleep']<= 150]
+data = data[data["bedtime_mssd"]<= 5]
+data = data[data["daytime_sleep"]<= 150]
 
 # %%    Scaling
 scaler = StandardScaler()

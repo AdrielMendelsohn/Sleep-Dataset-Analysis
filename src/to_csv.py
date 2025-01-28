@@ -1,8 +1,9 @@
 # Imports
-import pandas as pd
 import os
-from . import files_import
-from . import cleaning
+
+import pandas as pd
+
+from . import cleaning, files_import
 
 
 # Function to turn json files into pandas df and exports a csv file
@@ -11,11 +12,11 @@ def folder_to_csv(directory_path, column_to_check, make_csv):
 
     # Loop through all files in the directory
     for file_name in os.listdir(directory_path):
-        if file_name.endswith(".json"): 
+        if file_name.endswith(".json"):
             user_id = file_name.split("_")[1].split(".")[0]
             file_path = os.path.join(directory_path, file_name)
             data = pd.read_json(file_path)
-            data.insert(0, 'User', user_id) # Add the user ID as the first column
+            data.insert(0, "User", user_id) # Add the user ID as the first column
             combined_data = pd.concat([combined_data, data], ignore_index=True)
     filtered_data = combined_data.dropna(subset=[column_to_check])
 
@@ -32,13 +33,13 @@ def json_pd_to_csv(data, output_csv):
 
     for file_data in data:
         # Extract subject number from the file name
-        subject_number = file_data['file_name'].split('_')[1].split('.')[0]
+        subject_number = file_data["file_name"].split("_")[1].split(".")[0]
 
         # Create a DataFrame from the 'data' key
-        df = pd.DataFrame(file_data['data'])
+        df = pd.DataFrame(file_data["data"])
 
         # Add a subject number column
-        df['subject_number'] = subject_number
+        df["subject_number"] = subject_number
 
         # Append to the list of all data
         all_data.append(df)
@@ -57,16 +58,16 @@ def amount_of_entries_csv_simple(datasets, output_csv):
     for name, dir_path in datasets.items():
         files = cleaning.clean_data_from_jsons_folder(dir_path)
         for file in files:
-            subject = cleaning.extract_participant(file['file_name'])
-            
+            subject = cleaning.extract_participant(file["file_name"])
+
             if name not in number_of_entries:
                 number_of_entries[name] = {}
-            number_of_entries[name][subject] = file['record_count']
+            number_of_entries[name][subject] = file["record_count"]
 
     df = pd.DataFrame(number_of_entries)
     df.to_csv(output_csv, index=True)
 
-    
+
 
 # Function that given files creates a csv with amount of entries per participant per category
 def amount_of_entries_csv(datasets, output_csv):
@@ -86,7 +87,7 @@ def amount_of_entries_csv(datasets, output_csv):
         )
 
         # Extract user ID from file_name and count entries
-        flat_data["user_id"] = flat_data["file_name"].str.extract(r'u(\d+)').fillna('Unknown')
+        flat_data["user_id"] = flat_data["file_name"].str.extract(r"u(\d+)").fillna("Unknown")
         user_counts = flat_data["user_id"].value_counts()
 
         # Add counts to the user_entry_counts dictionary
