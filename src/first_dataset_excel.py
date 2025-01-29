@@ -17,10 +17,14 @@ survey_datasets = {
     "Activity": {"Path": "data/StudentLife/dataset/EMA/response/Activity", "Important_Column": "working"}
 }
 
+
 grades_file_path = "data/StudentLife/dataset/education/grades.csv"
 
 def initialize_excel_file(output_path):
     """Creates a new Excel file or deletes the existing one."""
+    # Check for the data, error if not
+    load_survey_data()
+
     if os.path.exists(output_path):
         os.remove(output_path)
         print(f"Deleted existing file: {output_path}")
@@ -153,24 +157,27 @@ def merge_data_with_output(combined_csv, output_path):
     df_output.to_excel(output_path, index=False)
     print("The file has been successfully updated!")
 
-def build_excel(output_path = "output.xlsx"):
-    """Runs the full data processing pipeline."""
-    initialize_excel_file(output_path)
-    all_data = load_survey_data()
-    create_user_column(output_path)
-    combined_csv = {}
-    process_stress_social(all_data, combined_csv)
-    process_exercise(all_data, combined_csv)
-    process_sleep(all_data, combined_csv)
-    process_mood(all_data, combined_csv)
-    process_time_managment(all_data, combined_csv)
-    grades_info = create_grades_dictionary()
-    df = pd.read_excel(output_path)
-    for index, row in df.iterrows():
-        student_id = row["User"]
-        df.at[index, "gpa_all"] = grades_info[student_id]["gpaAll"]
-        df.at[index, "gpa_13s"] = grades_info[student_id]["gpa_13s"]
-    df.to_excel(output_path, index=False)
-    merge_data_with_output(combined_csv, output_path)
-
+def build_excel(output_path = "data/output.xlsx"):
+    try:
+        """Runs the full data processing pipeline."""
+        initialize_excel_file(output_path)
+        all_data = load_survey_data()
+        create_user_column(output_path)
+        combined_csv = {}
+        process_stress_social(all_data, combined_csv)
+        process_exercise(all_data, combined_csv)
+        process_sleep(all_data, combined_csv)
+        process_mood(all_data, combined_csv)
+        process_time_managment(all_data, combined_csv)
+        grades_info = create_grades_dictionary()
+        df = pd.read_excel(output_path)
+        for index, row in df.iterrows():
+            student_id = row["User"]
+            df.at[index, "gpa_all"] = grades_info[student_id]["gpaAll"]
+            df.at[index, "gpa_13s"] = grades_info[student_id]["gpa_13s"]
+        df.to_excel(output_path, index=False)
+        merge_data_with_output(combined_csv, output_path)
+    except(FileNotFoundError, ValueError, RuntimeError) as e:
+        print(f"Error: {e}")
+        print("Not creating excel until data is found, please add StudentLife dataset to data directory.")
 

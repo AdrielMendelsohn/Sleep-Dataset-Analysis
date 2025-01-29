@@ -6,12 +6,18 @@ import first_dataset_analysis, first_dataset_excel, second_dataset_analysis
 
 
 def run_saves(excel_output_path):
-    first_dataset_analysis.run_full_data_analysis(excel_output_path, False, True)
-    second_dataset_analysis.run_full_sleep_analysis(False, True)
+    try:
+        first_dataset_analysis.run_full_data_analysis(excel_output_path, False, True)
+        second_dataset_analysis.run_full_sleep_analysis(False, True)
+    except(FileNotFoundError, ValueError, RuntimeError) as e:
+        print(f"Error: {e}")
 
 def run_shows(excel_output_path):
-    first_dataset_analysis.run_full_data_analysis(excel_output_path, True, False)
-    second_dataset_analysis.run_full_sleep_analysis(True, False)
+    try:
+        first_dataset_analysis.run_full_data_analysis(excel_output_path, True, False)
+        second_dataset_analysis.run_full_sleep_analysis(True, False)
+    except(FileNotFoundError, ValueError, RuntimeError) as e:
+        print(f"Error: {e}")
 
 def exit_application(root):
     if messagebox.askyesno("Confirm Exit", "Are you sure you want to exit?"):
@@ -21,17 +27,17 @@ def open_gui(excel_output_path):
     # Create the main window
     root = tk.Tk()
     root.title("Graph Viewer & Saver")
-    root.geometry("650x450")  # Slightly larger window for better spacing
-    root.resizable(True, True)  # Allow resizing
+    root.geometry("650x450")  
+    root.resizable(True, True)
 
     # Apply a ttk theme and define custom styles
     style = ttk.Style(root)
-    style.theme_use("clam")  # Modern ttk theme
+    style.theme_use("clam") 
 
     # Style for frames
     style.configure(
         "Custom.TFrame",
-        background="#f9f9f9",  # Light neutral background
+        background="#f9f9f9", 
         borderwidth=1,
         relief="solid",
     )
@@ -40,14 +46,14 @@ def open_gui(excel_output_path):
     style.configure(
         "Custom.TButton",
         background="#0078D4",  # Professional blue
-        foreground="white",    # White text
+        foreground="white",   
         font=("Helvetica", 12, "bold"),
         padding=6,
     )
     style.map(
         "Custom.TButton",
         background=[
-            ("active", "#005A9E"),  # Darker blue on hover
+            ("active", "#289BFF"), 
             ("disabled", "#d3d3d3"),
         ],
         foreground=[
@@ -58,7 +64,7 @@ def open_gui(excel_output_path):
     # Style for labels
     style.configure(
         "Custom.TLabel",
-        background="#f9f9f9",  # Match frame background
+        background="#f9f9f9",  # To match frame background
         font=("Helvetica", 16, "bold"),
         padding=10,
     )
@@ -97,7 +103,16 @@ def open_gui(excel_output_path):
         style="Custom.TButton",
         width=15,
     )
-    create_excel_button.pack(pady=10)
+    create_excel_button.pack(side="left", padx=15, pady=10)
+
+    # run_model_button = ttk.Button(
+    #     create_excel_frame,
+    #     text="Create Excel",
+    #     command=lambda: first_dataset_excel.build_excel(excel_output_path),
+    #     style="Custom.TButton",
+    #     width=15,
+    # )
+    # run_model_button.pack(side="right", padx=15, pady=10)
 
     # Add the Exit button at the bottom
     exit_button = ttk.Button(
@@ -105,5 +120,4 @@ def open_gui(excel_output_path):
     )
     exit_button.pack(side="bottom", pady=20)
 
-    # Run the main loop
     root.mainloop()

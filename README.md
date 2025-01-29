@@ -1,7 +1,7 @@
 ## Summary of the project:
-In this project we tried to answer the research question: "Which factors have the most influence on the quality of life of students and their grades, and in particular what role does sleep play in this?"
+In this project we tried to answer the research question: "Which factors have the most influence on the quality of life of students and their grades, and in particular what role does sleep play in them?"
 
-We used data from 2 different sources, and reached conclusions according to the correlations between the different variables.
+We used data from 2 different sources, and reached conclusions according to the correlations and other statistical analysis between the different variables.
 
 We presented our conclusions both verbally in the project documentation and visually through a variety of graphs.
 
@@ -20,7 +20,7 @@ https://docs.google.com/document/d/1EuhUgPbQv9cm5URP9kPPVjonuXNGIupUdfYly7VrroQ/
 
 
 ## To run the project follow this commands:
-All command should run under project root/working-directory
+All command should run under project root/working-directory:
 
 ```
 #install Virtualenv is - a tool to set up your Python environments
@@ -36,4 +36,10 @@ python.exe -m pip install --upgrade pip
 pip install -e .
 #install dev packages (Additional packages for linting, testing and other developer tools)
 pip install -e .[dev]
+#run the program (Windows)
+python src\main.py
+#run the program (Linux)
+python3 src/main.py
 ```
+
+Be careful not to press "Create Excel" if you haven't downloaded the first dataset and placed it in the 'data' directory
