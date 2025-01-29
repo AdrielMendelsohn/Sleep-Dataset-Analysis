@@ -16,7 +16,6 @@ from first_dataset_analysis import (
 
 class TestAnalyzeFirstDataset(unittest.TestCase):
     def setUp(self):
-        # יצירת DataFrame לדוגמא עם נתונים מספריים
         np.random.seed(42)
         self.df = pd.DataFrame({
             "User": [f"u{i:02}" for i in range(10)],
@@ -33,6 +32,8 @@ class TestAnalyzeFirstDataset(unittest.TestCase):
             "avg_sleep_hours": np.random.rand(10) * 10,
             "gpa_13s": np.random.rand(10) * 4
         })
+        self.save = False
+        self.show = False
     
     def test_make_interactive_heat_map(self):
         try:
@@ -42,25 +43,25 @@ class TestAnalyzeFirstDataset(unittest.TestCase):
     
     def test_make_regular_heat_map(self):
         try:
-            make_regular_heat_map(self.df)
+            make_regular_heat_map(self.df, self.show, self.save)
         except Exception as e:
             self.fail(f"make_regular_heat_map raised an exception: {e}")
     
     def test_plot_gpa_correlations(self):
         try:
-            plot_gpa_correlations(self.df)
+            plot_gpa_correlations(self.df, self.show, self.save)
         except Exception as e:
             self.fail(f"plot_gpa_correlations raised an exception: {e}")
     
     def test_plot_sleep_correlations(self):
         try:
-            plot_sleep_correlations(self.df)
+            plot_sleep_correlations(self.df, self.show, self.save)
         except Exception as e:
             self.fail(f"plot_sleep_correlations raised an exception: {e}")
     
     def test_plot_more_correlations(self):
         try:
-            plot_more_correlations(self.df)
+            plot_more_correlations(self.df, self.show, self.save)
         except Exception as e:
             self.fail(f"plot_more_correlations raised an exception: {e}")
     

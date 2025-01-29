@@ -18,6 +18,12 @@ def folder_to_csv(directory_path, column_to_check, make_csv):
             data = pd.read_json(file_path)
             data.insert(0, "User", user_id) # Add the user ID as the first column
             combined_data = pd.concat([combined_data, data], ignore_index=True)
+    
+
+    if combined_data.empty or column_to_check not in combined_data.columns:
+        return pd.DataFrame()  # Returns an empty DataFrame if there is no data or if the column does not exist
+
+
     filtered_data = combined_data.dropna(subset=[column_to_check])
 
     if make_csv:
@@ -43,6 +49,12 @@ def json_pd_to_csv(data, output_csv):
 
         # Append to the list of all data
         all_data.append(df)
+
+    if not all_data:
+        print("No data to save.")
+        empty_df = pd.DataFrame()  # Create an empty DataFrame
+        empty_df.to_csv(output_csv, index=False)  # Saving a blank CSV file
+        return
 
     # Concatenate all DataFrames into a single DataFrame
     combined_df = pd.concat(all_data, ignore_index=True)

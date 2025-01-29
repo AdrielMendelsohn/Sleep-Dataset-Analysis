@@ -1,4 +1,4 @@
-from src import cleaning, plotting
+import cleaning, plotting
 
 # Variables
 sleep_data_file_path = r"data\cmu-sleep.csv"

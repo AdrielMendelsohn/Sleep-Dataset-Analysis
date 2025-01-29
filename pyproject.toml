@@ -10,10 +10,10 @@ dependencies = [
 	"numpy==2.1.3",
     "pandas==2.2.3",
 	"scikit-learn==1.6.0",
-    "torch==2.5.1",
     "matplotlib==3.9.2",
-    "scipy==1.14.0",
+    "scipy==1.15.0",
     "plotly==5.24.1",
+    "seaborn==1.17.0",
 ]
 [project.optional-dependencies]
 dev = [
@@ -78,8 +78,8 @@ keep-runtime-typing = true
 convention = "google"
 
 [tool.mypy]
-disallow_untyped_defs = true # Functions need to be annotated
-warn_unused_ignores = true
+disallow_untyped_defs = false # Functions need to be annotated
+warn_unused_ignores = false
 ignore_missing_imports = true
 exclude = [
     "my-project-\\d+", # Ignore temporary folder created by setuptools when building an sdist

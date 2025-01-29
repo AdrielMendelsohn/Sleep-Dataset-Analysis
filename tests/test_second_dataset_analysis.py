@@ -1,6 +1,11 @@
 import unittest
 from unittest.mock import patch, MagicMock
 import pandas as pd
+import os
+import sys
+repo_root = os.path.dirname(os.path.abspath(__file__))  
+src_path = os.path.join(repo_root, "..", "src")         
+sys.path.append(src_path)
 import second_dataset_analysis
 
 class TestSecondDatasetAnalysis(unittest.TestCase):
