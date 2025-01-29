@@ -1,8 +1,13 @@
 import pytest
-import os
 import json
 import pandas as pd
+import os
 import sys
+
+# Add the src directory to sys.path dynamically
+repo_root = os.path.dirname(os.path.abspath(__file__))  
+src_path = os.path.join(repo_root, "..", "src")         
+sys.path.append(src_path)
 from files_import import analyze_text, analyze_csv, analyze_json, process_folder
 
 # Test fixtures

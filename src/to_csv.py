@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 
-from . import cleaning, files_import
+import cleaning, files_import
 
 
 # Function to turn json files into pandas df and exports a csv file

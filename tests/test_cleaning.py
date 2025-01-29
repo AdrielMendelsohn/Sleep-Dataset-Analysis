@@ -1,8 +1,14 @@
-import pytest
-import pandas as pd
-import numpy as np
 import os
-from ..src import cleaning
+import sys
+import pytest
+import numpy as np
+import pandas as pd
+
+# Add the src directory to sys.path dynamically
+repo_root = os.path.dirname(os.path.abspath(__file__))  
+src_path = os.path.join(repo_root, "..", "src")         
+sys.path.append(src_path)
+import cleaning
 
 # Fixtures
 @pytest.fixture

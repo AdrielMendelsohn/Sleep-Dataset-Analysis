@@ -1,7 +1,7 @@
 import re
 import numpy as np
 import pandas as pd
-from . import files_import
+import files_import
 
 
 def clean_data_from_jsons_folder(folder_path):

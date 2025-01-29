@@ -1,7 +1,13 @@
 import unittest
 import pandas as pd
-import os
 from unittest.mock import patch, MagicMock
+import os
+import sys
+
+# Add the src directory to sys.path dynamically
+repo_root = os.path.dirname(os.path.abspath(__file__))  
+src_path = os.path.join(repo_root, "..", "src")         
+sys.path.append(src_path)
 import first_dataset_excel
 
 class TestFirstDatasetExcel(unittest.TestCase):
@@ -18,7 +24,7 @@ class TestFirstDatasetExcel(unittest.TestCase):
     @patch('openpyxl.Workbook.save')
     def test_initialize_excel_file(self, mock_save, mock_remove, mock_exists):
         mock_exists.return_value = True
-        first_dataset_excel.initialize_excel_file()
+        first_dataset_excel.initialize_excel_file(self.test_output_path)
         mock_remove.assert_called_once_with(self.test_output_path)
 
     @patch('to_csv.folder_to_csv')

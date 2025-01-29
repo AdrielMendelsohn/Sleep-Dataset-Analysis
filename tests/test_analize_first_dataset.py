@@ -1,7 +1,15 @@
 import unittest
 import pandas as pd
 import numpy as np
-from analize_first_dataset import (
+import os
+import sys
+
+# Add the src directory to sys.path dynamically
+repo_root = os.path.dirname(os.path.abspath(__file__))  
+src_path = os.path.join(repo_root, "..", "src")         
+sys.path.append(src_path)
+
+from first_dataset_analysis import (
     make_interactive_heat_map, make_regular_heat_map, plot_gpa_correlations,
     plot_sleep_correlations, plot_more_correlations
 )
