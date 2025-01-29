@@ -10,11 +10,12 @@ else:
 
 
 excel_output_path = "data/output.xlsx"
+sleep_dataset_path = r"data\cmu-sleep.csv"
 
 # Run
 def main():
     
-    gui.open_gui(excel_output_path)
+    gui.open_gui(excel_output_path, sleep_dataset_path)
 
 
 if __name__ == "__main__":

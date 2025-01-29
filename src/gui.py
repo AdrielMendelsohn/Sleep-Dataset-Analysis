@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 import matplotlib.pyplot as plt
 import numpy as np
-import first_dataset_analysis, first_dataset_excel, second_dataset_analysis
+import first_dataset_analysis, first_dataset_excel, second_dataset_analysis, create_sleep_model
 
 
 def run_saves(excel_output_path):
@@ -19,11 +19,16 @@ def run_shows(excel_output_path):
     except(FileNotFoundError, ValueError, RuntimeError) as e:
         print(f"Error: {e}")
 
+def create_and_run_model(sleep_dataset_path):
+    data = create_sleep_model.clean_model_data(sleep_dataset_path)
+    model = create_sleep_model.train_model(data)
+    create_sleep_model.predict_user_input(model)
+
 def exit_application(root):
     if messagebox.askyesno("Confirm Exit", "Are you sure you want to exit?"):
         root.destroy()
 
-def open_gui(excel_output_path):
+def open_gui(excel_output_path, sleep_dataset_path):
     # Create the main window
     root = tk.Tk()
     root.title("Graph Viewer & Saver")
@@ -103,16 +108,16 @@ def open_gui(excel_output_path):
         style="Custom.TButton",
         width=15,
     )
-    create_excel_button.pack(side="left", padx=15, pady=10)
+    create_excel_button.pack(side="left", padx=25, pady=10)
 
-    # run_model_button = ttk.Button(
-    #     create_excel_frame,
-    #     text="Create Excel",
-    #     command=lambda: first_dataset_excel.build_excel(excel_output_path),
-    #     style="Custom.TButton",
-    #     width=15,
-    # )
-    # run_model_button.pack(side="right", padx=15, pady=10)
+    run_model_button = ttk.Button(
+        create_excel_frame,
+        text="Predict Score",
+        command=lambda: create_and_run_model(sleep_dataset_path),
+        style="Custom.TButton",
+        width=15,
+    )
+    run_model_button.pack(side="right", padx=25, pady=10)
 
     # Add the Exit button at the bottom
     exit_button = ttk.Button(
