@@ -1,25 +1,6 @@
 import re
 import numpy as np
 import pandas as pd
-import files_import
-
-
-def clean_data_from_jsons_folder(folder_path):
-    # Activating the function to process the folder
-    results = files_import.process_folder(folder_path)
-
-    # Cleaning the data
-    for student in results:
-        if "data" in student:
-           # Filter the data so that they do not contain values ​​with the key 'null'
-            student["data"] = [obj for obj in student["data"] if "null" not in obj]
-        if "record_count" in student:
-            # update relevant record_count
-            student["record_count"] = len(student["data"])
-
-    # Returning the clean information
-    return results
-
 
 def drop_blanks_and_nulls(data):
     # Replace blank strings with NaN and drop rows with missing values
@@ -34,7 +15,7 @@ def extract_participant(filename):
     return matches[0]
 
 def clean_sleep_data(file_path):
-    """Cleans the data from a given CSV file by performing the following steps:
+    """Cleans the sleep data from a given CSV file by performing the following steps:
     
     1. Reads the data from the specified CSV file.
     2. Drops the 'cohort' column.

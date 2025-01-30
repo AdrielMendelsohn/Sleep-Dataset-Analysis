@@ -11,18 +11,18 @@ def ensure_results_directory():
     if not os.path.exists("results"):
         os.makedirs("results")
 
-def run_saves(excel_output_path):
+def run_saves(excel_output_path, sleep_dataset_path):
     try:
         ensure_results_directory()
         first_dataset_analysis.run_full_data_analysis(excel_output_path, False, True)
-        second_dataset_analysis.run_full_sleep_analysis(False, True)
+        second_dataset_analysis.run_full_sleep_analysis(sleep_dataset_path, False, True)
     except(FileNotFoundError, ValueError, RuntimeError) as e:
         print(f"Error: {e}")
 
-def run_shows(excel_output_path):
+def run_shows(excel_output_path, sleep_dataset_path):
     try:
         first_dataset_analysis.run_full_data_analysis(excel_output_path, True, False)
-        second_dataset_analysis.run_full_sleep_analysis(True, False)
+        second_dataset_analysis.run_full_sleep_analysis(sleep_dataset_path, True, False)
     except(FileNotFoundError, ValueError, RuntimeError) as e:
         print(f"Error: {e}")
 
@@ -99,12 +99,12 @@ def open_gui(excel_output_path, sleep_dataset_path):
 
     # Add buttons for user actions
     show_button = ttk.Button(
-        button_frame, text="Show Graph", command=lambda: run_shows(excel_output_path), style="Custom.TButton", width=25
+        button_frame, text="Show Graph", command=lambda: run_shows(excel_output_path, sleep_dataset_path), style="Custom.TButton", width=25
     )
     show_button.pack(side="left", padx=10, pady=10)
 
     save_button = ttk.Button(
-        button_frame, text="Save Graph", command=lambda: run_saves(excel_output_path), style="Custom.TButton", width=25
+        button_frame, text="Save Graph", command=lambda: run_saves(excel_output_path, sleep_dataset_path), style="Custom.TButton", width=25
     )
     save_button.pack(side="right", padx=10, pady=10)
 

@@ -5,6 +5,8 @@ We used data from 2 different sources, and reached conclusions according to the 
 
 We presented our conclusions both verbally in the project documentation and visually through a variety of graphs.
 
+We created a simple GUI to allow the user to perform the analysis like we did, and to save/show the results.
+
 
 
 ## Project Data:
@@ -41,5 +43,3 @@ python src\main.py
 #run the program (Linux)
 python3 src/main.py
 ```
-
-Be careful not to press "Create Excel" if you haven't downloaded the first dataset and placed it in the 'data' directory

@@ -1,9 +1,17 @@
+'''
+
+This is how we ran the imports and analysis from the multiple .json files, and created an excel file with the data that we needed.
+
+Each file needs highly specific cleaning and analysis, therefore each one has a seperate function, and not shared functions.
+
+'''
+
 import os
 
 import pandas as pd
 from openpyxl import Workbook
 
-import to_csv
+import files_import
 
 # Define the dataset paths
 survey_datasets = {
@@ -36,7 +44,7 @@ def load_survey_data():
     """Loads and processes survey data into a dictionary."""
     all_data = {}
     for survey, dictionary in survey_datasets.items():
-        combined_data = to_csv.folder_to_csv(dictionary["Path"], dictionary["Important_Column"], 0)
+        combined_data = files_import.folder_to_csv(dictionary["Path"], dictionary["Important_Column"], 0)
         all_data[survey] = combined_data
     return all_data
 

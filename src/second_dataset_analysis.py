@@ -1,7 +1,5 @@
 import cleaning, plotting
 
-# Variables
-sleep_data_file_path = r"data\cmu-sleep.csv"
 
 
 def create_new_features(data):
@@ -42,9 +40,9 @@ def create_sleep_scatter_plots(sleep_data, show_choice, save_choice):
     plotting.scatterplot_regression_by_group(sleep_data, "study", "bedtime_mssd", "score", show_choice, save_choice)
     plotting.scatterplot_regression_by_group(sleep_data, "study", "TotalSleepTime", "score", show_choice, save_choice)
 
-def run_full_sleep_analysis(show_choice, save_choice):
+def run_full_sleep_analysis(sleep_dataset_path, show_choice, save_choice):
     if show_choice or save_choice:
-        sleep_data = cleaning.clean_sleep_data(sleep_data_file_path)
+        sleep_data = cleaning.clean_sleep_data(sleep_dataset_path)
         create_new_features(sleep_data)
         create_sleep_heatmap(sleep_data, show_choice, save_choice)
         create_sleep_scatter_plots(sleep_data, show_choice, save_choice)
