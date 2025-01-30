@@ -3,10 +3,17 @@ from tkinter import filedialog, messagebox, ttk
 import matplotlib.pyplot as plt
 import numpy as np
 import first_dataset_analysis, first_dataset_excel, second_dataset_analysis, create_sleep_model
+import os
 
+
+def ensure_results_directory():
+    """Create 'results' directory if it doesn't exist"""
+    if not os.path.exists("results"):
+        os.makedirs("results")
 
 def run_saves(excel_output_path):
     try:
+        ensure_results_directory()
         first_dataset_analysis.run_full_data_analysis(excel_output_path, False, True)
         second_dataset_analysis.run_full_sleep_analysis(False, True)
     except(FileNotFoundError, ValueError, RuntimeError) as e:
@@ -20,9 +27,9 @@ def run_shows(excel_output_path):
         print(f"Error: {e}")
 
 def create_and_run_model(sleep_dataset_path):
-    data = create_sleep_model.clean_model_data(sleep_dataset_path)
+    data, scaler = create_sleep_model.clean_model_data(sleep_dataset_path)
     model = create_sleep_model.train_model(data)
-    create_sleep_model.predict_user_input(model)
+    create_sleep_model.predict_user_input(model, scaler)
 
 def exit_application(root):
     if messagebox.askyesno("Confirm Exit", "Are you sure you want to exit?"):

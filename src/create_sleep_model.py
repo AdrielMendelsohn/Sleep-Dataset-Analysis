@@ -46,8 +46,7 @@ def clean_model_data(file_path):
   #   Scaling
   scaler = StandardScaler()
   data[features] = scaler.fit_transform(data[features])
-
-  return data
+  return data, scaler
 
 def train_model(data):
   #     Split the data
@@ -67,7 +66,7 @@ def train_model(data):
   print(f"MAE: {mae}, R²: {r2}")
   return model
 
-def predict_user_input(model):
+def predict_user_input(model, scaler):
     """Get user input for features, preprocess them, and make predictions using the trained model."""
     print("\nProvide the following inputs for prediction:")
     user_inputs = []
@@ -86,7 +85,6 @@ def predict_user_input(model):
     user_data = pd.DataFrame([user_inputs], columns=features)
 
     # Apply the same scaling used during training
-    scaler = StandardScaler()
     scaled_user_data = scaler.fit_transform(user_data)
 
     # Make the prediction
