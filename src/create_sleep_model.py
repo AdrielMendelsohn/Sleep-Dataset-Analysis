@@ -13,11 +13,10 @@ import cleaning
 features = [ "TotalSleepTime",
                "bedtime_mssd",
                  "midpoint_sleep",
-                 "study",
                   "daytime_sleep"
                ]
 
-col_to_predict = "score"
+col_to_predict = "score_scaled"
 
 def clean_model_data(file_path):
 
@@ -56,14 +55,16 @@ def train_model(data):
   X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
   #     Train the model
-  model = RandomForestRegressor(random_state=42)
+  model = RandomForestRegressor(n_estimators=200,
+    max_depth=15,    
+    random_state=42)
   model.fit(X_train, y_train)
 
   # evaluate the model
   predictions = model.predict(X_test)
   mae = metrics.mean_absolute_error(y_test, predictions)
   r2 = metrics.r2_score(y_test, predictions)
-  print(f"MAE: {mae}, R²: {r2}")
+  # print(f"MAE: {mae}, R²: {r2}") # If you'd like to see the metrics of the model
   return model
 
 def predict_user_input(model, scaler):
@@ -85,7 +86,7 @@ def predict_user_input(model, scaler):
     user_data = pd.DataFrame([user_inputs], columns=features)
 
     # Apply the same scaling used during training
-    scaled_user_data = scaler.fit_transform(user_data)
+    scaled_user_data = scaler.transform(user_data)
 
     # Make the prediction
     prediction = model.predict(scaled_user_data)

@@ -1,6 +1,15 @@
 # Ignore all folders inside the 'data' directory, except StudentLife dataset surveys answers
-data/*/
-!data/StudentLife/dataset/EMA/response/**
+/data/*
+
+# Allow StudentLife dataset survey answers
+!/data/StudentLife/
+/data/StudentLife/**
+!/data/StudentLife/dataset/
+/data/StudentLife/dataset/**
+!/data/StudentLife/dataset/EMA/
+/data/StudentLife/dataset/EMA/**
+!/data/StudentLife/dataset/EMA/response/
+!/data/StudentLife/dataset/EMA/response/**
 
 # Ignore all files inside the 'results' directory
 results/*

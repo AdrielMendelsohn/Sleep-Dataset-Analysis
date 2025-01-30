@@ -1,4 +1,4 @@
-## Summary of the project:
+# Summary of the project:
 In this project we tried to answer the research question: "Which factors have the most influence on the quality of life of students and their grades, and in particular what role does sleep play in them?"
 
 We used data from 2 different sources, and reached conclusions according to the correlations and other statistical analysis between the different variables.
@@ -9,37 +9,81 @@ We created a simple GUI to allow the user to perform the analysis like we did, a
 
 
 
-## Project Data:
+# Project Data:
 https://studentlife.cs.dartmouth.edu/datasets.html
 
 https://www.kaggle.com/datasets/mexwell/cmu-sleep
 
 
 
-## Project Documentation:
+# Project Documentation:
 https://docs.google.com/document/d/1EuhUgPbQv9cm5URP9kPPVjonuXNGIupUdfYly7VrroQ/edit?usp=sharing
 
 
 
-## To run the project follow this commands:
-All command should run under project root/working-directory:
+# Setting Up Your Python Project with Virtualenv
 
-```
-#install Virtualenv is - a tool to set up your Python environments
+## To run the project, follow these commands:
+All commands should be run under the project root/working directory.
+
+## 1. Install Virtualenv
+Virtualenv is a tool that helps create isolated Python environments.
+
+```bash
 pip install virtualenv
-#create virtual environment (serve only this project):
+```
+
+## 2. Create a Virtual Environment
+This command creates a virtual environment named `venv` (you can replace `venv` with any name you prefer).
+
+```bash
 python -m venv venv
-#activate virtual environment
-.\venv\Scripts\activate
-+ (venv) should appear as prefix to all command (run next command just after activating venv)
-#update venv's python package-installer (pip) to its latest version
-python.exe -m pip install --upgrade pip
-#install projects packages (Everything needed to run the project)
+```
+
+## 3. Activate the Virtual Environment
+- **Windows:**
+  ```bash
+  .\venv\Scripts\activate
+  ```
+
+- **Linux/Mac:**
+  ```bash
+  source venv/bin/activate
+  ```
+
+You should see `(venv)` as a prefix in your terminal after activation.
+
+## 4. Update `pip` (Python Package Installer)
+Ensure that `pip` inside your virtual environment is up to date.
+
+```bash
+python -m pip install --upgrade pip
+```
+
+## 5. Install Project Dependencies
+Install all the necessary packages for running the project.
+
+```bash
 pip install -e .
-#install dev packages (Additional packages for linting, testing and other developer tools)
+```
+
+## 5.5. (Optional) Install Development Dependencies
+These include tools for testing, linting, and other development-related tasks.
+
+```bash
 pip install -e .[dev]
-#run the program (Windows)
+```
+
+## 6. Running the Program
+### On Windows:
+```bash
 python src\main.py
-#run the program (Linux)
+```
+
+### On Linux/Mac:
+```bash
 python3 src/main.py
 ```
+
+---
+You are now ready to develop and run your project within this isolated environment! Happy coding!
