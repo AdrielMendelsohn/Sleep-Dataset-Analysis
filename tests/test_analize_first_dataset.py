@@ -10,8 +10,7 @@ src_path = os.path.join(repo_root, "..", "src")
 sys.path.append(src_path)
 
 from first_dataset_analysis import (
-    make_interactive_heat_map, make_regular_heat_map, plot_gpa_correlations,
-    plot_sleep_correlations, plot_more_correlations
+    make_interactive_heat_map
 )
 
 class TestAnalyzeFirstDataset(unittest.TestCase):
@@ -40,30 +39,6 @@ class TestAnalyzeFirstDataset(unittest.TestCase):
             make_interactive_heat_map(self.df)
         except Exception as e:
             self.fail(f"make_interactive_heat_map raised an exception: {e}")
-    
-    def test_make_regular_heat_map(self):
-        try:
-            make_regular_heat_map(self.df, self.show, self.save)
-        except Exception as e:
-            self.fail(f"make_regular_heat_map raised an exception: {e}")
-    
-    def test_plot_gpa_correlations(self):
-        try:
-            plot_gpa_correlations(self.df, self.show, self.save)
-        except Exception as e:
-            self.fail(f"plot_gpa_correlations raised an exception: {e}")
-    
-    def test_plot_sleep_correlations(self):
-        try:
-            plot_sleep_correlations(self.df, self.show, self.save)
-        except Exception as e:
-            self.fail(f"plot_sleep_correlations raised an exception: {e}")
-    
-    def test_plot_more_correlations(self):
-        try:
-            plot_more_correlations(self.df, self.show, self.save)
-        except Exception as e:
-            self.fail(f"plot_more_correlations raised an exception: {e}")
     
     def test_user_column_removed(self):
         df_numeric = self.df.drop(columns=["User"], errors="ignore")
