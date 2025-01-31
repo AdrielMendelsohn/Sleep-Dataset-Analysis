@@ -15,6 +15,11 @@ features = [ "TotalSleepTime",
                  "midpoint_sleep",
                   "daytime_sleep"
                ]
+feature_names = [ "Total Sleep Time [hours]",
+               "Bedtime Variability Average [hours]",
+                 "Sleep Midpoint Hour [HH:MM]",
+                  "Daytime Sleep [minutes]"
+               ]
 
 col_to_predict = "score_scaled"
 
@@ -23,12 +28,15 @@ def clean_model_data(file_path):
   data = pd.read_csv(file_path)
 
   # Make new feature - weighted score (0-100)
-
   data["score"] = data.groupby("study")["term_gpa"].transform(lambda x: 25 * x)
   # Scaling according to specific Universities scores
   data["score_scaled"] = data.groupby("study")["term_gpa"].transform(
       lambda x: 100 * (x - x.min()) / (x.max() - x.min())
   )
+  # Translate columns into more understandable units
+  data['TotalSleepTime'] = data['TotalSleepTime'] / 60
+
+
   #  Clean the data
   data = data.drop("cohort", axis=1)
 
@@ -64,7 +72,7 @@ def train_model(data):
   predictions = model.predict(X_test)
   mae = metrics.mean_absolute_error(y_test, predictions)
   r2 = metrics.r2_score(y_test, predictions)
-  # print(f"MAE: {mae}, R²: {r2}") # If you'd like to see the metrics of the model
+  print(f"MAE: {mae}, R²: {r2}") # If you'd like to see the metrics of the model
   return model
 
 def predict_user_input(model, scaler):

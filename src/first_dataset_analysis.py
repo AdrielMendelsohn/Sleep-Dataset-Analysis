@@ -3,15 +3,15 @@ import pandas as pd
 import plotly.figure_factory as ff
 import plotly.io as pio
 import seaborn as sns
-
+from plotting import plot_correlation, plot_correlation_matrix
 
 def make_interactive_heat_map(df):
+    """
+    Creates an interactive heatmap using plotly
+    """
     pio.renderers.default = "iframe_connected"
-    # Removing the "User" column because it is not numeric
     df_numeric = df.drop(columns=["User"])
-    # Calculation of the correlation matrix
     correlation_matrix = df_numeric.corr()
-    # Create an interactive heat map
     fig = ff.create_annotated_heatmap(
         z=correlation_matrix.values,
         x=list(df_numeric.columns),
@@ -21,112 +21,46 @@ def make_interactive_heat_map(df):
     )
     fig.write_html("results/plot.html")
 
-def make_regular_heat_map(df, show_choice, save_choice):
-    # Removes ID column
-    if "User" in df.columns:
-        df = df.drop(columns=["User"])
-    # Checking correlations
-    correlation_matrix = df.corr()
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
-    plt.title("Correlation Matrix")
-    if save_choice:
-        plt.savefig("results/Full Data Correlation Matrix.png", dpi = 300)
-    if show_choice:
-        plt.show()
-    else:
-        plt.close()
+def plot_all_correlations(df, show_choice, save_choice):
+    """
+    Plots all specified correlations
+    """
+    # Define all correlation pairs
+    correlations = [
+        ("avg_working_percentage", "gpa_all"),
+        ("avg_workout_per_day", "gpa_all"),
+        ("stressed_percentage", "gpa_all"),
+        ("avg_sad_rating", "gpa_all"),
+        ("avg_sleep_rating", "happy_percentage"),
+        ("avg_sleep_rating", "avg_stress_level"),
+        ("number_of_people", "avg_happy_rating"),
+        ("stressed_percentage", "avg_workout_per_day"),
+        ("happy_percentage", "avg_workout_per_day"),
+        ("avg_sleep_rating", "gpa_13s"),
+        ("avg_sleep_hours", "gpa_13s")
+    ]
+    
+    # Plot individual correlations
+    for x, y in correlations:
+        plot_correlation(df, x, y, show_choice=show_choice, save_choice=save_choice)
 
-def plot_gpa_correlations(df, show_choice, save_choice):
-    # Correlation between gpa_all and (avg_working_percentage, avg_workout_per_day, stressed_percentage, avg_sad_rating)
-    gpa_factors = ["avg_working_percentage", "avg_workout_per_day", "stressed_percentage", "avg_sad_rating"]
-    for factor in gpa_factors:
-        plt.figure(figsize=(8, 6))
-        sns.regplot(x="gpa_all", y=factor, data=df)
-        correlation = df[["gpa_all", factor]].corr().iloc[0, 1]
-        plt.text(0.05, 0.9, f"Correlation: {correlation:.2f}", transform=plt.gca().transAxes, fontsize=12, bbox=dict(facecolor="white", alpha=0.5))
-        plt.title(f"GPA vs {factor}")
-        if save_choice:
-            plt.savefig(f"results/GPA vs {factor} Correlation.png", dpi = 300)
-        if show_choice:
-            plt.show()
-        else:
-            plt.close()
-
-def plot_sleep_correlations(df, show_choice, save_choice):
-    # Correlation between avg_sleep_rating and (happy_percentage, avg_stress_level)
-    sleep_factors = ["happy_percentage", "avg_stress_level"]
-    for factor in sleep_factors:
-        plt.figure(figsize=(8, 6))
-        sns.regplot(x="avg_sleep_rating", y=factor, data=df)
-        correlation = df[["avg_sleep_rating", factor]].corr().iloc[0, 1]
-        plt.text(0.05, 0.9, f"Correlation: {correlation:.2f}", transform=plt.gca().transAxes, fontsize=12, bbox=dict(facecolor="white", alpha=0.5))
-        plt.title(f"sleep rating vs {factor}")
-        if save_choice:
-            plt.savefig(f"results/sleep rating vs {factor} Correlation.png", dpi = 300)
-        if show_choice:
-            plt.show()
-        else:
-            plt.close()
-
-def plot_more_correlations(df, show_choice, save_choice):
-    # Other promising correlations
-    # Correlation between number_of_people and avg_happy_rating
-    plt.figure(figsize=(8, 6))
-    sns.regplot(x="number_of_people", y="avg_happy_rating", data=df)
-    correlation = df[["number_of_people", "avg_happy_rating"]].corr().iloc[0, 1]
-    plt.text(0.05, 0.9, f"Correlation: {correlation:.2f}", transform=plt.gca().transAxes, fontsize=12, bbox=dict(facecolor="white", alpha=0.5))
-    plt.title("avg_happy_rating vs number_of_people")
-    if save_choice:
-        plt.savefig("results/avg_happy_rating vs number_of_people Correlation.png", dpi = 300)
-    if show_choice:
-        plt.show()
-    else:
-        plt.close()
-
-    # Correlation between avg_workout_per_day and (stressed_percentage, happy_percentage)
-    workout_factors = ["stressed_percentage", "happy_percentage"]
-    for factor in workout_factors:
-        plt.figure(figsize=(8, 6))
-        sns.regplot(x=factor, y="avg_workout_per_day", data=df)
-        correlation = df[[factor, "avg_workout_per_day"]].corr().iloc[0, 1]
-        plt.text(0.05, 0.9, f"Correlation: {correlation:.2f}", transform=plt.gca().transAxes, fontsize=12, bbox=dict(facecolor="white", alpha=0.5))
-        plt.title(f"avg_workout_per_day vs {factor}")
-        if save_choice:
-            plt.savefig(f"results/sleep avg_workout_per_day vs {factor} Correlation.png", dpi = 300)
-        if show_choice:
-            plt.show()
-        else:
-            plt.close()
-
-
-    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-    # Graph 1: correlation between gpa_13s and avg_sleep_rating
-    sns.regplot(x="avg_sleep_rating", y="gpa_13s", data=df, ax=axes[0])
-    correlation = df[["avg_sleep_rating", "gpa_13s"]].corr().iloc[0, 1]
-    axes[0].text(0.05, 0.9, f"Correlation: {correlation:.2f}", transform=axes[0].transAxes, fontsize=12, bbox=dict(facecolor="white", alpha=0.5))
-    axes[0].set_title("GPA vs Sleep Quality")
-    # Graph 2: correlation between gpa_13s and avg_sleep_hours
-    sns.regplot(x="avg_sleep_hours", y="gpa_13s", data=df, ax=axes[1])
-    correlation = df[["avg_sleep_hours", "gpa_13s"]].corr().iloc[0, 1]
-    axes[1].text(0.05, 0.9, f"Correlation: {correlation:.2f}", transform=axes[1].transAxes, fontsize=12, bbox=dict(facecolor="white", alpha=0.5))
-    axes[1].set_title("GPA vs Sleep Hours")
-    plt.tight_layout()
-    if save_choice:
-        plt.savefig(f"results/GPA vs Sleep Hours and Sleep Quality Correlation.png", dpi = 300)
-    if show_choice:
-        plt.show()
-    else:
-        plt.close()
-
-def run_full_data_analysis(file_path = "data/output.xlsx", show_choice = 0, save_choice = 0):
-    # Default - looks for "output.xlsx" in the directory, doesn't save or show
+def run_full_data_analysis(file_path="data/output.xlsx", show_choice=0, save_choice=0):
+    """
+    Main function to run the complete data analysis
+    
+    Parameters:
+    -----------
+    file_path : str
+        Path to the Excel file containing the data
+    show_choice : int
+        Whether to display the plots (0: no, 1: yes)
+    save_choice : int
+        Whether to save the plots (0: no, 1: yes)
+    """
     df = pd.read_excel(file_path)
-    # plot all graphs:
+    
     if save_choice:
-        make_interactive_heat_map(df)
+        make_interactive_heat_map(df) # Create corraletoins interactive heatmap
     if show_choice or save_choice:
-        make_regular_heat_map(df, show_choice, save_choice)
-        plot_gpa_correlations(df, show_choice, save_choice)
-        plot_sleep_correlations(df, show_choice, save_choice)
-        plot_more_correlations(df, show_choice, save_choice)
+        plot_correlation_matrix(df,"Students life", show_choice, save_choice) # Create corraletoins regular heatmap
+        plot_all_correlations(df, show_choice, save_choice)

@@ -21,7 +21,7 @@ https://docs.google.com/document/d/1EuhUgPbQv9cm5URP9kPPVjonuXNGIupUdfYly7VrroQ/
 
 
 
-# Setting Up Your Python Project with Virtualenv
+# Setting Up This Python Project with Virtualenv
 
 ## To run the project, follow these commands:
 All commands should be run under the project root/working directory.

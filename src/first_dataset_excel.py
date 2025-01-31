@@ -7,7 +7,7 @@ Each file needs highly specific cleaning and analysis, therefore each one has a 
 '''
 
 import os
-
+from tkinter import messagebox
 import pandas as pd
 from openpyxl import Workbook
 
@@ -186,6 +186,5 @@ def build_excel(output_path = "data/output.xlsx"):
         df.to_excel(output_path, index=False)
         merge_data_with_output(combined_csv, output_path)
     except(FileNotFoundError, ValueError, RuntimeError) as e:
-        print(f"Error: {e}")
-        print("Not creating excel until data is found, please add StudentLife dataset to data directory.")
+        messagebox.showerror("Dataset not found", f"Please download dataset and place in data directory.\nhttps://studentlife.cs.dartmouth.edu/datasets.html\n{str(e)}")
 

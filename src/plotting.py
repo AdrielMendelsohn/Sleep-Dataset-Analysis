@@ -13,6 +13,8 @@ def plot_correlation_matrix(data, name, show_choice, save_choice):
     Returns:
     None
     """
+    if "User" in data.columns: # Only use the numeric columns
+        data = data.drop(columns=["User"])
     # Compute the correlation matrix
     correlation_matrix = data.corr()
 
@@ -28,6 +30,64 @@ def plot_correlation_matrix(data, name, show_choice, save_choice):
     else:
         plt.close()
 
+
+def plot_correlation(df, x, y, title=None, ax=None, show_choice=False, save_choice=False):
+    """
+    Creates a correlation plot between two variables
+    
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        The input dataframe containing the data
+    x : str
+        Name of the x-axis variable
+    y : str
+        Name of the y-axis variable
+    title : str, optional
+        Custom title for the plot
+    ax : matplotlib.axes.Axes, optional
+        The axes to plot on. If None, creates a new figure
+    show_choice : bool
+        Whether to display the plot
+    save_choice : bool
+        Whether to save the plot
+    
+    Returns:
+    --------
+    matplotlib.axes.Axes
+        The axes object containing the plot
+    """
+    # Create new figure if no axes provided
+    if ax is None:
+        plt.figure(figsize=(8, 6))
+        ax = plt.gca()
+    
+    # Create the regression plot
+    sns.regplot(x=x, y=y, data=df, ax=ax)
+    
+    # Calculate and display correlation
+    correlation = df[[x, y]].corr().iloc[0, 1]
+    ax.text(0.05, 0.9, f"Correlation: {correlation:.2f}", 
+            transform=ax.transAxes, fontsize=12, 
+            bbox=dict(facecolor="white", alpha=0.5))
+    
+    # Set title
+    if title is None:
+        title = f"{y} vs {x}"
+    ax.set_title(title)
+    
+    # Save if requested and it's a standalone plot
+    if save_choice and ax.figure.number == plt.gcf().number:
+        filename = f"results/{y} vs {x} Correlation.png"
+        plt.savefig(filename, dpi=300)
+    
+    # Show if requested and it's a standalone plot
+    if show_choice and ax.figure.number == plt.gcf().number:
+        plt.show()
+    elif not show_choice and ax.figure.number == plt.gcf().number:
+        plt.close()
+    
+    return ax
 
 def scatterplot_regression_by_group(data, group_col, x_col, y_col, show_choice, save_choice):
     """Creates a single scatterplot with different colors and regression lines for each group in the dataset, and saves as .png.

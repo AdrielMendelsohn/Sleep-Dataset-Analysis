@@ -5,12 +5,29 @@ import numpy as np
 import first_dataset_analysis, first_dataset_excel, second_dataset_analysis, create_sleep_model
 import os
 import pandas as pd
+from datetime import datetime
 
 
 def ensure_results_directory():
     """Create 'results' directory if it doesn't exist"""
     if not os.path.exists("results"):
         os.makedirs("results")
+
+def convert_time_to_minutes_after_10(time_str):
+    """Converts a time in HH:MM format to minutes after 11:00 PM."""
+    try:
+        # Parse the time entered by the user
+        user_time = datetime.strptime(time_str, "%H:%M")
+        reference_time = datetime.strptime("22:00", "%H:%M")
+        difference = (user_time - reference_time).total_seconds() / 60
+
+        # Handle cases where time is before 11 PM
+        if difference < 0:
+            difference += 24 * 60  # Adjust to next day
+
+        return int(difference)
+    except ValueError:
+        raise ValueError("Invalid time format. Please enter in HH:MM format.")
 
 def run_saves(excel_output_path, sleep_dataset_path):
     try:
@@ -32,8 +49,17 @@ def create_and_run_model(entries, sleep_dataset_path):
     """Collect inputs from GUI, clean data, train the model, and make a prediction."""
     try:
         # Collect user input from entry widgets
-        user_inputs = [float(entry.get()) for entry in entries]
-
+        user_inputs = []
+        for feature, entry in zip(create_sleep_model.features, entries):
+            value = entry.get()
+            if feature == "midpoint_sleep":
+                # Convert HH:MM to minutes after 11 PM
+                print(f"before: {value}")
+                value = convert_time_to_minutes_after_10(value)
+                print(f"after: {value}")
+            else:
+                value = float(value)
+            user_inputs.append(value)
         # Load and prepare the dataset
         data, scaler = create_sleep_model.clean_model_data(sleep_dataset_path)
         model = create_sleep_model.train_model(data)
@@ -49,12 +75,8 @@ def create_and_run_model(entries, sleep_dataset_path):
         messagebox.showinfo("Prediction Result", f"Predicted Score: {prediction:.2f}")
 
     except ValueError as e:
-        messagebox.showerror("Input Error", f"Please enter valid numeric inputs.\n{str(e)}")
+        messagebox.showerror("Input Error", f"Please enter valid inputs.\n{str(e)}")
 
-# def create_and_run_model(sleep_dataset_path):
-#     data, scaler = create_sleep_model.clean_model_data(sleep_dataset_path)
-#     model = create_sleep_model.train_model(data)
-#     create_sleep_model.predict_user_input(model, scaler)
 
 def exit_application(root):
     if messagebox.askyesno("Confirm Exit", "Are you sure you want to exit?"):
@@ -116,7 +138,7 @@ def open_gui(excel_output_path, sleep_dataset_path):
     title_label.pack(pady=5)
 
     # User input section frame
-    input_frame = ttk.Frame(root, padding=20)
+    input_frame = ttk.Frame(root, padding=20, width=500)
     input_frame.pack(padx=20, pady=10)
 
     # Button for predicting score
@@ -135,11 +157,11 @@ def open_gui(excel_output_path, sleep_dataset_path):
 
     # Dynamic creation of labels and entry fields for features
     entries = []  # To store entry widgets
-    for feature in create_sleep_model.features:
+    for feature in create_sleep_model.feature_names:
         row_frame = ttk.Frame(input_frame)
         row_frame.pack(fill="x", pady=5)
 
-        label = ttk.Label(row_frame, text=f"{feature}:", width=20, anchor="w")
+        label = ttk.Label(row_frame, text=f"{feature}:", width=35, anchor="w")
         label.pack(side="left")
 
         entry = ttk.Entry(row_frame, width=30)
@@ -167,14 +189,6 @@ def open_gui(excel_output_path, sleep_dataset_path):
     )
     create_excel_button.pack(side="left", padx=25, pady=10)
 
-    # run_model_button = ttk.Button(
-    #     create_excel_frame,
-    #     text="Predict Score",
-    #     command=lambda: create_and_run_model(sleep_dataset_path),
-    #     style="Custom.TButton",
-    #     width=15,
-    # )
-    # run_model_button.pack(side="right", padx=25, pady=10)
 
     # Add the Exit button at the bottom
     exit_button = ttk.Button(

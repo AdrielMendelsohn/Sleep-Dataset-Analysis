@@ -8,7 +8,7 @@ except ImportError:
 
 # Variables
 excel_output_path = "data/output.xlsx"
-sleep_dataset_path = r"data\cmu-sleep.csv"
+sleep_dataset_path = "data/cmu-sleep.csv"
 
 
 def main():
