@@ -5,7 +5,7 @@ import numpy as np
 import first_dataset_analysis, first_dataset_excel, second_dataset_analysis, create_sleep_model
 import os
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def ensure_results_directory():
@@ -13,17 +13,25 @@ def ensure_results_directory():
     if not os.path.exists("results"):
         os.makedirs("results")
 
-def convert_time_to_minutes_after_10(time_str):
+def convert_bedtime_to_minutes_after_10(time_str, total_sleep_time):
     """Converts a time in HH:MM format to minutes after 11:00 PM."""
     try:
         # Parse the time entered by the user
-        user_time = datetime.strptime(time_str, "%H:%M")
-        reference_time = datetime.strptime("22:00", "%H:%M")
-        difference = (user_time - reference_time).total_seconds() / 60
+        bedtime = datetime.strptime(time_str, "%H:%M")
+        print(f"before: {bedtime}")
+        length_of_sleep = timedelta(minutes=(total_sleep_time * 60) / 2)
+        sleep_midpoint = bedtime + length_of_sleep
+        print(f"After adjustment: {sleep_midpoint.strftime('%H:%M')}")
 
-        # Handle cases where time is before 11 PM
+        reference_time = datetime.strptime("22:00", "%H:%M")
+        difference = (sleep_midpoint - reference_time).total_seconds() / 60
+        print(f"time after 10: {difference}")
+
+        # Handle cases where time is before 10 PM
         if difference < 0:
             difference += 24 * 60  # Adjust to next day
+        if difference > 24 * 60:
+            difference -= 24 * 60  # Adjust to range 0-1440 (a single day)
 
         return int(difference)
     except ValueError:
@@ -50,16 +58,18 @@ def create_and_run_model(entries, sleep_dataset_path):
     try:
         # Collect user input from entry widgets
         user_inputs = []
+        total_sleep = 0
         for feature, entry in zip(create_sleep_model.features, entries):
             value = entry.get()
             if feature == "midpoint_sleep":
-                # Convert HH:MM to minutes after 11 PM
-                print(f"before: {value}")
-                value = convert_time_to_minutes_after_10(value)
-                print(f"after: {value}")
+                # Convert bedtime HH:MM to midpoint minutes after 10 PM
+                value = convert_bedtime_to_minutes_after_10(value, total_sleep)
             else:
                 value = float(value)
             user_inputs.append(value)
+            # Save sleep time to calculate midpoint
+            if feature == "TotalSleepTime":
+                total_sleep = value
         # Load and prepare the dataset
         data, scaler = create_sleep_model.clean_model_data(sleep_dataset_path)
         model = create_sleep_model.train_model(data)

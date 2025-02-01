@@ -15,9 +15,9 @@ features = [ "TotalSleepTime",
                  "midpoint_sleep",
                   "daytime_sleep"
                ]
-feature_names = [ "Total Sleep Time [hours]",
+feature_names = [ "Average Sleep Per Night [hours]",
                "Bedtime Variability Average [hours]",
-                 "Sleep Midpoint Hour [HH:MM]",
+                 "Average Bedtime Hour [HH:MM]",
                   "Daytime Sleep [minutes]"
                ]
 
