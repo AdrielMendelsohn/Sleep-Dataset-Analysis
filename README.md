@@ -74,7 +74,14 @@ These include tools for testing, linting, and other development-related tasks.
 pip install -e .[dev]
 ```
 
-## 6. Running the Program
+## 6. (Optional) Running tests
+Run the unit tests included in the project using the following command.
+
+```bash
+tox
+```
+
+## 7. Running the Program
 ### On Windows:
 ```bash
 python src\main.py
