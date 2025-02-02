@@ -74,7 +74,22 @@ These include tools for testing, linting, and other development-related tasks.
 pip install -e .[dev]
 ```
 
-## 6. Running the Program
+## 6. (Optional) Adding the 'Student Lifestyle' data
+In order to run the code we wrote to extract data from the 'Student Lifestyle' data, download it from the attached link and add the resulting 'StudentLife folder' into the 'data' folder in the project.
+
+```bash
+https://studentlife.cs.dartmouth.edu/datasets.html
+```
+After that, all you have to do to run the code is to select the 'Create Excel' option in the interactive window that opens when you run the program.
+
+## 7. (Optional) Running tests
+Run the unit tests included in the project using the following command.
+
+```bash
+tox
+```
+
+## 8. Running the Program
 ### On Windows:
 ```bash
 python src\main.py

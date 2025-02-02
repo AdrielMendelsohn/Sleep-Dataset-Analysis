@@ -7,7 +7,7 @@ import sys
 repo_root = os.path.dirname(os.path.abspath(__file__))  
 src_path = os.path.join(repo_root, "..", "src")         
 sys.path.append(src_path)
-import to_csv
+import files_import
 
 class TestToCSV(unittest.TestCase):
     def setUp(self):
@@ -32,7 +32,7 @@ class TestToCSV(unittest.TestCase):
         mock_listdir.return_value = ['test_u001.json']
         mock_read_json.return_value = self.test_df
         
-        result = to_csv.folder_to_csv("test/path", "test_column", False)
+        result = files_import.folder_to_csv("test/path", "test_column", False)
         
         self.assertIsInstance(result, pd.DataFrame)
         self.assertFalse(result.empty)
@@ -40,7 +40,7 @@ class TestToCSV(unittest.TestCase):
     def test_folder_to_csv_no_files(self):
         """Test folder_to_csv with no JSON files"""
         with patch('os.listdir', return_value=[]):
-            result = to_csv.folder_to_csv("test/path", "test_column", False)
+            result = files_import.folder_to_csv("test/path", "test_column", False)
             self.assertIsInstance(result, pd.DataFrame)
             self.assertTrue(result.empty)
 
