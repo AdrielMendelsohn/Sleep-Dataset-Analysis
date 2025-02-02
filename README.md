@@ -75,7 +75,7 @@ pip install -e .[dev]
 ```
 
 ## 6. (Optional) Adding the 'Student Lifestyle' data
-In order to run the code we wrote to extract data from the 'Student Lifestyle' data, download it from the attached link and add the resulting 'StudentLife folder' into the 'data' folder in the project.
+In order to run the code we wrote to extract data from the 'Student Lifestyle' data, download it from the attached link and add the resulting 'StudentLife' folder into the 'data' folder in the project.
 
 ```bash
 https://studentlife.cs.dartmouth.edu/datasets.html
