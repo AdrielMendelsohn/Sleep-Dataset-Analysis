@@ -28,6 +28,7 @@ max_variability = 5
 max_daytime_sleep = 150
 
 def clean_model_data(file_path):
+  """Cleans and creates new features to better train the model."""
 
   data = pd.read_csv(file_path)
 
@@ -60,6 +61,8 @@ def clean_model_data(file_path):
   return data, scaler
 
 def train_model(data):
+  """Trains the model according to the given data and tests it."""
+
   #     Split the data
   X = data[features]
   y = data[col_to_predict]  # or 'happy_percentage'

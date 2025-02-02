@@ -3,12 +3,39 @@ import numpy as np
 import pandas as pd
 
 def drop_blanks_and_nulls(data):
+
+    """
+    The `drop_blanks_and_nulls` function cleans a given DataFrame by handling missing values and removing incomplete data.
+
+    ### Parameters:
+    - `data` (pd.DataFrame): 
+        - The input DataFrame potentially containing blank strings or null values.
+
+    ### Returns:
+    - `pd.DataFrame`: 
+        - The cleaned DataFrame with blank strings replaced by NaN and rows containing missing values dropped.
+    """
     # Replace blank strings with NaN and drop rows with missing values
     data = data.replace(r"^\s*$", np.nan, regex=True)
     data = data.dropna()
     return data
 
 def extract_participant(filename):
+    """
+    The `extract_participant` function identifies and extracts the participant ID from the given filename using a specific pattern.
+
+    ### Parameters:
+    - `filename` (str): 
+        - The name of the file containing a participant ID in the format `u<number>`, e.g., `data_u123.csv`.
+
+    ### Returns:
+    - `str`: 
+        - The participant ID found within the filename.
+
+    ### Raises:
+    - `Exception`: 
+        - Raised if multiple participant IDs are detected in the filename.
+    """
     matches = re.findall(r"u\d+(?=\.)", filename)
     if len(matches)>1:
         raise Exception("Multiple participants in name")
