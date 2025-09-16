@@ -1,11 +1,11 @@
 # Summary of the project:
 In this project we attempted to answer the research question: "Which factors have the most influence on the quality of life of students and their grades, and in particular what role does sleep play in them?"
 
-We used data from 2 different sources, and reached conclusions according to correlations and other statistical analysis between the different variables.
+- We used data from 2 different sources, and reached conclusions according to correlations and other statistical analysis between the different variables.
 
-We presented our conclusions both verbally in the project documentation and visually through a variety of graphs.
+- We presented our conclusions both verbally in the project documentation and visually through a variety of graphs.
 
-We created a simple GUI to allow the user to perform the analysis like we did, and to save/show the results.
+- We created a simple GUI to allow the user to perform the analysis like we did, and to save/show the results.
 
 
 
